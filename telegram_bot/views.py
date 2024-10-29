@@ -21,10 +21,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 application.add_handler(CommandHandler("start", start))
 
 @csrf_exempt
-async def webhook(request):
+def webhook(request):
     if request.method == 'POST':
         update = Update.de_json(json.loads(request.body), bot)
-        await application.update_queue.put(update)
-        
+        application.update_queue.put(update)
         return JsonResponse({"status": "success"})
     return JsonResponse({"status": "Bot is running on Django."})
